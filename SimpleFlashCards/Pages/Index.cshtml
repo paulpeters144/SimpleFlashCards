@@ -1,0 +1,233 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script src="~/js/Index.js"></script>
+<script src="~/js/toaster.js"></script>
+<style type="text/css">
+</style>
+<div id="toaster" style="position:absolute; right:0;"></div>
+<div class="container-fluid">
+    <br />
+    <div class="row">
+        <div class="mt-lg-5 m-auto">
+            <div id="cardContainer" class="">
+                <div class="row m-auto" id="cardDiv">
+                    <section class="card-container m-auto">
+                        <div class="card" onclick="flip(this)" style="border-radius:25px; font-weight:400;">
+                            <div class="front">
+                                <div class="card text-dark bg-white mb-3" style="border-radius:25px; box-shadow: 0 0 0 3px black;">
+                                    <div class="card-body">
+                                        <h4 class="card-title" style="color: black;">Question 1 of ...</h4>
+                                        <p class="card-text mt-4 text-center" style="color: black" id="q">
+                                            <div class="col" id="cardLoader" style="margin-left:35%; margin-top:8%;">
+                                                <div class="spinner-grow" style="width:20px; height:20px;" role="status">
+                                                </div>
+                                                <div class="spinner-grow" style="width:20px; height:20px; margin-left:25px;" role="status">
+                                                </div>
+                                                <div class="spinner-grow" style="width:20px; height:20px; margin-left:50px;" role="status">
+                                                </div>
+                                            </div>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="back">
+                                <div class="card text-dark bg-white mb-3" style="border-radius:25px; box-shadow: 0 0 0 3px black;">
+                                    <div class="card-body">
+                                        <h4 class="card-title" style="color: black">Answer</h4>
+                                        <p class="card-text text-justify text-left" id="a" style="overflow-y: scroll; height: 150px; color:black;">
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="text-right mt-2">
+                <button class="btn btn-primary" onclick="next(-1)"><i class="fas fa-arrow-circle-left" style="font-size:18px;"></i></button>
+                <button class="btn btn-primary mr-3" onclick="next(1)"><i class="fas fa-arrow-circle-right" style="font-size:18px;"></i></button>
+            </div>
+        </div>
+        <div style="max-width:500px;" class="col m-auto">
+            @if (!String.IsNullOrEmpty(Model.RegMessage))
+            {
+                if (String.Equals(Model.RegMessage, "has-email"))
+                {
+                    <script>
+                        warnToast("Email was already found in our database.");
+                    </script>
+                }
+                else if (String.Equals(Model.RegMessage, "pw-no-match"))
+                {
+                    <script>
+                        warnToast("Passwords do not match. Try entering the same password.");
+                    </script>
+                }
+                else if (String.Equals(Model.RegMessage, "pw-week"))
+                {
+                    <script>
+                        warnToast("Password not strong. Please use:<br/><ul><li>at least 8 characters</li><li>aleast 1 letters</li><li>aleast 1 number</li></ul>");
+                    </script>
+                }
+                else if (String.Equals(Model.RegMessage, "hasemail"))
+                {
+                    <script>
+                        warnToast("Email was already found in our database.");
+                    </script>
+                }
+                else if (String.Equals(Model.RegMessage, "has-un"))
+                {
+                    <script>
+                        warnToast("User name already taken.");
+                    </script>
+                }
+                else if (String.Equals(Model.RegMessage, "disagree"))
+                {
+                    <script>
+                        warnToast("Please aggree to the terms and usage to continue.");
+                    </script>
+                }
+                else if (String.Equals(Model.RegMessage, "ok"))
+                {
+                    Response.Redirect("Registered");
+                }
+            }
+            @if (!String.IsNullOrEmpty(Model.LoginMessage))
+            {
+                if (String.Equals(Model.LoginMessage, "invalid"))
+                {
+                    <script>
+                        showDefaultLogin();
+                        warnToast("Invalid user name or password.");
+                    </script>
+                }
+            }
+            <script>
+            </script>
+            <div id="Reg">
+                <h3>Register</h3>
+                <form asp-page-handler="register" method="post">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" asp-for="Register.Email" class="form-control" id="regEmail" aria-describedby="emailHelp" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" asp-for="Register.Name" class="form-control" id="reg-name" aria-describedby="nameHelp" placeholder="Enter a your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" asp-for="Register.Password" class="form-control" id="regPassword" placeholder="Password"
+                               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Re-Password</label>
+                        <input type="password" asp-for="Register.RePassword" class="form-control" id="regRePassword" placeholder="Password">
+                    </div>
+                    <div class="checkbox">
+                        <input type="checkbox" asp-for="Register.Agree">
+                        <label> I agree to this site's <a href="#">terms and usage</a>. </label><br>
+                    </div>
+                    <div class="text-right">
+                        <input type="submit" class="btn btn-primary" value="Submit">
+                    </div>
+                </form>
+                <div class="ml-3">
+                    <div class="row">
+                        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+                        <script src="https://apis.google.com/js/api:client.js"></script>
+                        <script>
+                            var googleUser = {};
+                            var startApp = function () {
+                                gapi.load('auth2', function () {
+                                    auth2 = gapi.auth2.init({
+                                        client_id: '610897483523-in07quch0mjfdkgrbvtjh0n2b4hgid3r.apps.googleusercontent.com',
+                                        cookiepolicy: 'single_host_origin'
+                                    });
+                                    attachSignin(document.getElementById('gSignInWrapper'));
+                                });
+                            };
+                            function attachSignin(element) {
+                                auth2.attachClickHandler(element, {},
+                                    function (googleUser) {
+                                        const id_token = googleUser.getAuthResponse().id_token;
+                                        authId(id_token);
+                                    }, function (error) {
+                                        alert(JSON.stringify(error, undefined, 2));
+                                    });
+                            }
+                        </script>
+                        <div id="gSignInWrapper" class="btn btn-success mb-1" style="width: 13em;">
+                            <i class="fab fa-google mr-3"></i>Login with Google
+                        </div>
+                        <script>startApp();</script>
+                    </div>
+                    @*<div class="row">
+                            <a class="btn btn-secondary mb-1" style="width: 13em; background-color:royalblue;">
+                                <i class="fab fa-facebook mr-1"></i>
+                                Login with Facebook
+                            </a>
+                        </div>
+                        <div class="row">
+                            <a class="btn btn-secondary" style="width: 13em; background-color:#1DA1F2;">
+                                <i class="fab fa-twitter mr-1"></i>
+                                Login with Twitter
+                            </a>
+                        </div>*@
+                </div>
+            </div>
+            <div id="Login" style="display:none;">
+                <h3>Login</h3>
+                <form asp-page-handler="login" method="post">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email</label>
+                        <input type="text" asp-for="Register.Email" class="form-control" id="loginEmail" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" asp-for="Register.Password" class="form-control" id="loginPassword" placeholder="Password">
+                    </div>
+                    <p style="font-size:14px;">Forgot Password or Username? <a asp-page="Reset">Click here</a></p>
+                    <div class="text-right">
+                        <input type="submit" class="btn btn-primary" value="Login">
+                    </div>
+                </form>
+                <div class="ml-3">
+                    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+                    <script src="https://apis.google.com/js/api:client.js"></script>
+                    <script>
+                        var googleUser = {};
+                        var startApp = function () {
+                            gapi.load('auth2', function () {
+                                auth2 = gapi.auth2.init({
+                                    client_id: '610897483523-in07quch0mjfdkgrbvtjh0n2b4hgid3r.apps.googleusercontent.com',
+                                    cookiepolicy: 'single_host_origin'
+                                });
+                                attachSignin(document.getElementById('gSignInWrapper2'));
+                            });
+                        };
+                        function attachSignin(element) {
+                            auth2.attachClickHandler(element, {},
+                                function (googleUser) {
+                                    const id_token = googleUser.getAuthResponse().id_token;
+                                    authId(id_token);
+                                }, function (error) {
+                                    alert(JSON.stringify(error, undefined, 2));
+                                });
+                        }
+                    </script>
+                    <div id="gSignInWrapper2" class="btn btn-success mb-1" style="width: 13em;">
+                        <i class="fab fa-google mr-3"></i>Login with Google
+                    </div>
+                    <script>startApp();</script>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+    </div>
+</div>

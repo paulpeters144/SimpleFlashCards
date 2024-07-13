@@ -1,0 +1,141 @@
+﻿@page
+@model SimpleFlashCards.Pages.Account.AccountModel
+@{
+}
+<script src="~/js/Home.js"></script>
+
+<style>
+    .toolttip {
+        position: relative;
+        display: inline-block;
+    }
+
+    .toolttip .tooltiptext {
+        visibility: hidden;
+        width: 200px;
+        background-color: black;
+        color: #fff;
+        text-align: left;
+        border-radius: 6px;
+        padding: 8px;
+        position: absolute;
+        z-index: 1;
+        font-size: 15px;
+    }
+
+    .toolttip:hover .tooltiptext {
+        visibility: visible;
+    }
+    img {
+        width: 250px;
+    }
+    .text-img-center{
+        position: absolute;
+        top: 50%;
+        width:200px;
+        left: 50%;
+        color:black;
+        font-weight:600;
+        font-size:18px;
+        text-align:center;
+        transform: translate(-50%, -75%);
+    }
+
+    .img-container {
+        position: relative;
+        text-align: center;
+        color: white;
+    }
+    textarea {
+        outline: none;
+        resize: none;
+    }
+</style>
+
+<h1 class="mt-5 text-primary">Card Table</h1>
+<div class="container">
+    <div id="cardContainer">
+        <div class="row">
+            @*<div class="col">
+                <div class="img-container toolttip">
+                    <img src="~/img/cardLogo.png" />
+                    <div class="text-img-center">Solution Architect Mathmatics</div>
+                    <span class="tooltiptext mt-3">
+                        Tooltip text. But I have some more text to mention.
+                    </span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="img-container toolttip">
+                    <img src="~/img/cardLogo.png" />
+                    <div class="text-img-center">Solution Architect</div>
+                    <span class="tooltiptext mt-3">
+                        Tooltip text. But I have some more text to mention. I think this might all look weird once I get into writing a lot more text
+                        Maybe I should use some lipsom sorum text. But nah. I think I'm going to keep writing random stuff here.
+                    </span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="img-container toolttip">
+                    <img src="~/img/cardLogo.png" />
+                    <div class="text-img-center">Solution Architect</div>
+                    <span class="tooltiptext mt-3">
+                        Tooltip text. But I have some more text to mention. I think this might all look weird once I get into writing a lot more text
+                        Maybe I should use some lipsom sorum text. But nah. I think I'm going to keep writing random stuff here.
+                    </span>
+                </div>
+            </div>*@
+            <div class="col text-center" style="margin-top:15%;" id="cardLoader">
+                @*<div class="spinner-grow" style="width:20px; height:20px;" role="status">
+                </div>
+                <div class="spinner-grow" style="width:20px; height:20px;" role="status">
+                </div>
+                <div class="spinner-grow" style="width:20px; height:20px;" role="status">
+                </div>
+                <p>Loading Decks</p>*@
+                <h3>No decks found...</h3>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4 container" id="mainBtns">
+        <div class="">
+            <div class="text-center">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createDeckModal">Create Deck</button>
+            </div>
+            <div class="text-right" id="deckNavBtns" style="display:none;">
+                <button class="btn btn-primary"><i class="fas fa-arrow-circle-left" style="font-size:18px;"></i></button>
+                <button class="btn btn-primary mr-3"><i class="fas fa-arrow-circle-right" style="font-size:18px;"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal-->
+<div class="modal fade" id="createDeckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalHeader">Create a Deck!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-form-label" for="inputDefault">Title</label>
+                    <input type="text" class="form-control" placeholder="Enter a title." id="titleInput"/>
+                </div>
+                <div class="form-group">
+                    <label for="exampleTextarea">Desciption</label>
+                    <textarea class="form-control" id="descriptionInput" rows="5" cols="30" 
+                              placeholder="Enter a description.">this is a desc</textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="createDeck()">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal-->

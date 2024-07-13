@@ -1,0 +1,30 @@
+﻿@page
+@model SimpleFlashCards.Pages.RegisteredModel
+@{
+}
+<script>
+    $(document).ready(() => {
+        document.getElementById("mainNav").innerHTML = "";
+    });
+</script>
+@if (Model.Message == RegisteredModel.Context.newReg)
+{
+    <h1 class="text-success mt-5">Registered!</h1>
+    <h4>
+        Check the email that was used to register the account. You'll find a link to complete the verification.
+    </h4>
+}
+else if (Model.Message == RegisteredModel.Context.Verified)
+{
+    <h1 class="text-success mt-5">Verified!</h1>
+    <h4>
+        All set. Try <a href="#">here</a> to get started. Happy studying!
+    </h4>
+}
+else if (Model.Message == RegisteredModel.Context.AlreadyVerified)
+{
+    <h1 class="text-success mt-5">Verified...</h1>
+    <h4>
+        Not sure why you're here cause it seems like you're already set. Try <a href="#">here</a> to get started.
+    </h4>
+}
