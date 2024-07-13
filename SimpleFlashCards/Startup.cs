@@ -36,8 +36,8 @@ namespace SimpleFlashCards
             })
                 .AddCookie(options => { options.LoginPath = "/account/google-login"; })
                 .AddGoogle(options => { 
-                    options.ClientId = "610897483523-in07quch0mjfdkgrbvtjh0n2b4hgid3r"; 
-                    options.ClientSecret = "wqyNFkiehIDkgKg76EnJbomW"; 
+                    options.ClientId = ""; 
+                    options.ClientSecret = ""; 
                 });
 
             //Added for session state
